@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Link</title>
     <style>
-        /* Yüklenme animasyonu */
+    
         .loader {
             position: fixed;
             top: 0;
@@ -24,8 +24,8 @@
             border: 4px solid transparent;
             border-top: 4px solid white;
             border-radius: 50%;
-            width: 80px; /* Daha büyük boyut */
-            height: 80px; /* Daha büyük boyut */
+            width: 80px; 
+            height: 80px;
             animation: spin 1s linear infinite;
         }
 
@@ -48,7 +48,7 @@
             }
         }
 
-        /* Sayfa içeriği */
+  
         body {
             background-color: black;
             color: white;
@@ -65,7 +65,7 @@
             animation: slideUp 1.5s ease-in-out forwards;
         }
 
-        /* Link yazılarını yukarıdan getirme animasyonu */
+      
         ul {
             list-style-type: none;
             padding: 0;
@@ -127,13 +127,13 @@
             }
         }
 
-        /* Footer Animasyonu */
+      
         footer {
             position: fixed;
             bottom: 0;
             width: 100%;
-            background-color: black; /* Siyah arka plan */
-            color: red; /* Kırmızı yazı */
+            background-color: black;
+            color: red; 
             padding: 20px;
             font-size: 14px;
             text-align: center;
@@ -152,24 +152,24 @@
             }
         }
 
-        /* Saat ve Tarih Animasyonu */
+    
         #datetime {
             position: fixed;
             bottom: 60px;
-            left: -300px; /* Başlangıçta ekranın dışında */
+            left: -300px; 
             color: red;
             font-size: 14px;
             opacity: 0;
-            animation: slideDate 2s 2s forwards; /* 2 saniye gecikmeli animasyon */
+            animation: slideDate 2s 2s forwards; 
         }
 
         @keyframes slideDate {
             from {
-                transform: translateX(0); /* Soldan kayarak gelmesi */
+                transform: translateX(0); 
                 opacity: 0;
             }
             to {
-                transform: translateX(300px); /* Ekranın içine kayarak gelmesi */
+                transform: translateX(300px); 
                 opacity: 1;
             }
         }
@@ -232,8 +232,8 @@
             document.getElementById('datetime').innerText = `${formattedDate} ${formattedTime}`;
         }
 
-        setInterval(updateDateTime, 1000); // Güncel saati her saniye güncelle
-        updateDateTime(); // Sayfa yüklendiğinde hemen ilk defa çalıştır
+        setInterval(updateDateTime, 1000); 
+        updateDateTime(); 
     </script>
 </body>
 </html>
