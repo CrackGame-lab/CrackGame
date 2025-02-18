@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crack Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/5930/5930147.png" sizes="16x16">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #333;
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    input#search {
+      padding: 10px;
+      width: 80%;
+      max-width: 400px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .game-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .game {
+      background-color: #2a2a2a;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 10px;
+      text-align: center;
+      width: 250px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      font-family: system-ui, 'Segoe UI','Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: 500;
+      text-shadow: 0px 0px 10px black;
+      min-height: 450px;
+      transition: all 1s;
+    }
+
+    .game img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .game h2 {
+      margin: 10px 0 5px;
+    }
+
+    .game p {
+      flex-grow: 1;
+      margin: 10px 0;
+    }
+
+    .game:hover {
+      transform: scale(1.09);
+      transition: all 1s;
+      text-shadow: 0px 0px 10px black;
+    }
+
+    button {
+      background-color: #13a700c5;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      width: 100%;
+      margin-top: auto;
+    }
+
+    button:hover {
+      background-color: #096d0098;
+    }
+
+    /* Sağ üst köşedeki Geri Dön butonu için özel stil */
+    .back-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: auto; /* Global buton stilindeki genişliği geçersiz kılar */
+      margin: 0;
+      padding: 10px 20px;
+      background-color: #ff5722;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      z-index: 1000;
+    }
+    
+    .back-button:hover {
+      background-color: #e64a19;
+    }
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+
+    #loader .dot {
+      width: 15px;
+      height: 15px;
+      background: #fff;
+      border-radius: 50%;
+      margin: 0 5px;
+      animation: bounce 1s infinite;
+    }
+
+    #loader .dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    #loader .dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes bounce {
+      0%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-20px);
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div id="loader">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+  <header>
+    <h1>Crack Game</h1>
+    <input type="text" id="search" placeholder="Oyun Ara...">
+  </header>
+
+  <!-- Sağ üst köşeye eklenen Geri Dön butonu -->
+  <button class="back-button" onclick="history.back()">Geri Dön</button>
+
+  <main>
+    <div class="game-list" id="gameList">
+      <div class="game">
+        <img src="https://media1.tenor.com/m/b_pO2oK4RwYAAAAC/satsuma-my-summer-car.gif" alt="My Summer Car">
+        <h2>My Summer Car</h2>
+        <p>My Summer Car, araç simülasyon oyunu olmasının yanında bir hayatta kalma oyunudur.</p>
+        <button onclick="downloadGame('https://drive.google.com/drive/folders/1n_fqIkfbWNOdTyb3d2dHBL0-GqbZ4eO8')">İndir</button>
+      </div>
+      <div class="game">
+        <img src="https://i.makeagif.com/media/4-24-2017/_mzWS9.gif" alt="Grand Theft Auto IV">
+        <h2>Grand Theft Auto IV</h2>
+        <p>Grand Theft Auto IV, Rockstar North tarafından geliştirilen ve Rockstar Games tarafından yayınlanan 2008 yapımı bir aksiyon-macera oyunudur.</p>
+        <button onclick="downloadGame('https://drive.usercontent.google.com/download?id=1MR8cuTeCw_2AiDaCboVr4Qoo6TXMr_Zy&export=download')">İndir</button>
+      </div>
+      <div class="game">
+        <img src="https://media0.giphy.com/media/pYmAquAAd5YKLvDcxx/giphy.gif?cid=6c09b952rs60dhe68azd3hkbmzf2d152ny2tdfxptwhbddx6&ep=v1_gifs_search&rid=giphy.gif&ct=g" alt="Farming Simülatör">
+        <h2>Farming Simülatör</h2>
+        <p>Farming Simulator, Giants Software tarafından geliştirilen çiftlik simülasyonu üzerine kurulu video oyunu serisidir.</p>
+        <button onclick="downloadGame('https://drive.usercontent.google.com/download?id=11tzDwHwt1vbrxc9SH0diHVAsMK614ntg')">İndir</button>
+      </div>
+      <div class="game">
+        <img src="https://media4.giphy.com/media/26CYzjDCeIns0EZt6/giphy.gif?cid=6c09b952tbp73wteo0c69gbluurpmjyi4yybifbpqzeisxq2&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=g" alt="The Forest">
+        <h2>The Forest</h2>
+        <p>The Forest Endnight Games tarafından geliştirilen ve yayınlanan bir hayatta kalma video oyunudur.</p>
+        <button onclick="downloadGame('https://drive.google.com/file/d/143f1Dfg3005xbhq8dB41JisbSTkJPyr5/view')">İndir</button>
+      </div>
+      <div class="game">
+        <img src="https://s3.crackedcdn.com/phpimages/article/3/9/6/324396_v1.gif" alt="Assasins Creed 4 Black Flag">
+        <h2>Assasins Creed 4 Black Flag</h2>
+        <p>Assassin's Creed IV: Black Flag, Ubisoft Montreal tarafından geliştirilen ve Ubisoft tarafından yayımlanan 2013 yapımı bir aksiyon-macera video oyunudur.</p>
+        <button onclick="downloadGame('https://drive.usercontent.google.com/download?id=1h-l9kdu7FfG-q-9wfJ0PGPFjEaG6Fp6P&export=download&authuser=0')">İndir</button>
+      </div>
+      <div class="game">
+        <img src="https://i.gifer.com/78tL.gif" alt="Subnautica">
+        <h2>Subnautica</h2>
+        <p>Subnautica, Unknown Worlds Entertainment tarafından geliştirilen ve yayınlanan açık dünya aksiyon-macera oyunudur.</p>
+        <button onclick="downloadGame('https://drive.usercontent.google.com/download?id=1zwZdRJ9fKuZiGAuitM8Jc5Lie6ZFNlOf')">İndir</button>
+      </div>
+      <div class="game">
+        <img src="https://steamuserimages-a.akamaihd.net/ugc/829077126818567360/DE8598EC393D7DC02B809EB986C6259A6D5C3D33/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false" alt="Need For Speed 2">
+        <h2>Need For Speed 2</h2>
+        <p>Need for Speed: Underground 2, EA Black Box tarafından geliştirilip Electronic Arts tarafından 2004 Mayıs ayında yayımlanmıştır.</p>
+        <button onclick="downloadGame('https://dosya.co/tkcuhx542439/nfs_underground_2_serial_ve_crack.rar.html')">İndir</button>
+      </div>
+      </div>
+    </div>
+  </main>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchInput = document.getElementById("search");
+
+      searchInput.addEventListener("keyup", function () {
+        let input = searchInput.value.toLowerCase();
+        let games = document.querySelectorAll(".game");
+
+        games.forEach(game => {
+          let title = game.querySelector("h2").innerText.toLowerCase();
+          if (title.includes(input)) {
+            game.style.display = "flex"; // Flex kutu modeli kullanıldığı için "flex" olarak ayarlıyoruz
+          } else {
+            game.style.display = "none";
+          }
+        });
+      });
+    });
+
+    function downloadGame(url) {
+      window.open(url, '_blank');
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchInput = document.getElementById("search");
+
+      searchInput.addEventListener("keyup", function () {
+        let input = searchInput.value.toLowerCase();
+        let games = document.querySelectorAll(".game");
+
+        games.forEach(game => {
+          let title = game.querySelector("h2").innerText.toLowerCase();
+          if (title.includes(input)) {
+            game.style.display = "flex";
+          } else {
+            game.style.display = "none";
+          }
+        });
+      });
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchInput = document.getElementById("search");
+
+      searchInput.addEventListener("keyup", function () {
+        let input = searchInput.value.toLowerCase();
+        let games = document.querySelectorAll(".game");
+
+        games.forEach(game => {
+          let title = game.querySelector("h2").innerText.toLowerCase();
+          if (title.includes(input)) {
+            game.style.display = "flex"; // Flex düzen kullanıldığı için "flex" ayarlandı
+          } else {
+            game.style.display = "none";
+          }
+        });
+      });
+
+      // 2 saniye sonra yükleme ekranını gizle
+      setTimeout(function(){
+        const loader = document.getElementById("loader");
+        loader.style.opacity = "0";
+        setTimeout(function(){
+          loader.style.display = "none";
+        }, 500);
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
