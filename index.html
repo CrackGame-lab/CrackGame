@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -16,21 +17,162 @@
       --loader-bg: rgba(0, 0, 0, 0.9);
     }
 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Roboto', sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
       text-align: center;
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* Yeni Yüklenme Animasyonu */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--loader-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      animation: fadeOut 1s forwards 2s;
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    .spinner-container {
+      display: flex;
+      justify-content: space-between;
+      width: 120px;
+      height: 40px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      animation: move 1s linear infinite;
+    }
+
+    .spinner:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .spinner:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .spinner:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes move {
+      0% {
+        transform: scale(0.5);
+        opacity: 0.5;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0.5);
+        opacity: 0.5;
+      }
     }
 
     h1 {
       font-size: 3.2rem;
       margin-top: 40px;
+      animation: slideDown 1s ease-out;
     }
 
+    @keyframes slideDown {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .category-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 50px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .category-buttons button {
+      background-color: var(--button-bg);
+      color: var(--text-color);
+      border: none;
+      padding: 16px 32px;
+      font-size: 1.3rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    }
+
+    .category-buttons button:hover {
+      background-color: var(--button-hover-bg);
+      transform: translateY(-4px);
+    }
+
+    /* Kategori içerikleri */
     .category {
       display: none;
       margin-top: 40px;
+    }
+
+    .category ul {
+      list-style: none;
+      padding: 0;
+      max-width: 700px;
+      margin: 20px auto;
+    }
+
+    .category li {
+      margin: 15px 0;
+      background-color: #1a1a1a;
+      padding: 14px;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+
+    .category li:hover {
+      background-color: #34495e;
+    }
+
+    .category a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+
+    .category a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
     }
 
     footer {
@@ -40,17 +182,84 @@
       background-color: #34495e;
       color: var(--primary-color);
       padding: 15px;
+      font-size: 1rem;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.3);
+      animation: fadeIn 1s forwards;
+    }
+
+    footer a {
+      color: var(--accent-color);
+      cursor: pointer;
+      margin: 0 10px;
+    }
+
+    #datetime {
+      position: fixed;
+      bottom: 50px;
+      left: 20px;
+      color: var(--primary-color);
+      font-size: 1rem;
+      animation: fadeIn 1s forwards;
     }
 
     #about, #update {
       display: none;
+      animation: fadeIn 0.8s forwards;
       max-width: 700px;
       margin: 30px auto;
       line-height: 1.6;
     }
+
+    #about button, #update button {
+      background-color: var(--primary-color);
+      color: var(--text-color);
+      border: none;
+      padding: 14px 30px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #about button:hover, #update button:hover {
+      background-color: var(--accent-color);
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .category-buttons {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .category-buttons button {
+        padding: 14px 28px;
+        font-size: 1.1rem;
+      }
+
+      footer {
+        font-size: 0.9rem;
+      }
+
+      #datetime {
+        font-size: 0.9rem;
+        bottom: 40px;
+      }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Yeni Yüklenme Animasyonu -->
+  <div class="loader">
+    <div class="spinner-container">
+      <div class="spinner"></div>
+      <div class="spinner"></div>
+      <div class="spinner"></div>
+    </div>
+  </div>
 
   <h1>Crack Games</h1>
 
@@ -60,13 +269,32 @@
     <button onclick="showCategory('apps')">Uygulamalar</button>
   </div>
 
+  <!-- Uygulamalar Kategorisi -->
+  <div id="apps" class="category">
+    <h2>Uygulamalar</h2>
+    <ul>
+      <li><a href="https://chromewebstore.google.com/detail/ublock-origin-lite/ddkjiahejlhfcafbddmgiahcphecmpfh" target="_blank">Ublock-origin-lite – Eklenti</a></li>
+      <li><a href="https://drive.google.com/file/d/1kR6SgzVHUVCmCDlj771iQYxRqlKV9gsv/view" target="_blank">Revo Uninstaller Pro</a></li>
+      <li><a href="https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-701.exe" target="_blank">WinRAR</a></li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <a onclick="showAbout()">Hakkımızda</a> |
+    <a onclick="showCategory('update')">Son Güncellemeler</a>
+  </footer>
+
+  <!-- Tarih & Saat -->
+  <div id="datetime"></div>
+
   <!-- Hakkımızda Sayfası -->
   <div id="about" class="category">
     <h2>Hakkımızda</h2>
     <p>Bu site, Kolay oyun erişimi için yapılmıştır; herhangi bir maddi geliri yoktur.<br>
-       Geliştiriciler: ENDERBAD_64 & LostBlood<br>
+       Geliştiriciler: ENDERBAD_64&LostBlood<br>
        İletişim;<br>
-       Discord: enderbad_64.59 & lost_blood74 <br>
+       Discord: enderbad_64.59&lost_blood74 <br>
        Instagram: enderbad_64.59</p>
     <button onclick="goToMainMenu()">Ana Menü</button>
   </div>
@@ -74,22 +302,22 @@
   <!-- Son Güncellemeler Sayfası -->
   <div id="update" class="category">
     <h2>Son Güncellemeler</h2>
-    <p>V4.2 Beta version<br>
-       -Yeni ana sayfa güncellemesi<br>
-       -Yeni oyunlar eklendi<br>
-       -Hatalar onarıldı</p>
     <p>V4.1 Beta version<br>
-       -Yeni oyunlar<br>
-       -Yeni oyun sayfası<br>
-       -Hatalar onarıldı</p>
+      -Yeni oyunlar<br>
+      -Yeni oyun sayfası<br>
+      -Hatalar onarıldı</p>
+     <p> V4.0 Beta version<br>
+      -Yeni oyun sayfası</p>
+    <p>V3.9 Beta version<br>
+     -Yeni oyunlar<br>
+    -Hatalar onarıldı</p>
+    <p>V3.8 Beta version<br>
+         -Hatalar onarıldı</p>
+      <p> V3.7 Beta version<br>
+         -Yeni oyunlar eklendi<br>
+         - Hatalar onarıldı</p>
     <button onclick="goToMainMenu()">Ana Menü</button>
   </div>
-
-  <!-- Footer -->
-  <footer>
-    <a onclick="showCategory('about')">Hakkımızda</a> |
-    <a onclick="showCategory('update')">Son Güncellemeler</a>
-  </footer>
 
   <script>
     function showCategory(category) {
@@ -97,9 +325,28 @@
       document.getElementById(category).style.display = 'block';
     }
 
+    function showAbout() {
+      document.querySelector('h1').style.display = 'none';
+      document.querySelector('.category-buttons').style.display = 'none';
+      document.querySelectorAll('.category').forEach(cat => cat.style.display = 'none');
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+        document.body.style.opacity = '1';
+        document.getElementById('about').style.display = 'block';
+      }, 1000);
+    }
+
     function goToMainMenu() {
       location.reload();
     }
+
+    function updateDateTime() {
+      const now = new Date();
+      document.getElementById('datetime').innerText = now.toLocaleString('tr-TR');
+    }
+
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
   </script>
 
 </body>
