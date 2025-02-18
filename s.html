@@ -1,384 +1,261 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crack Game</title>
-  <!-- Google Fonts: Roboto -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/5930/5930147.png" sizes="16x16">
+
   <style>
-    /* CSS Değişkenleri ile modern renk paleti */
-    :root {
-      --bg-color: #121212;
-      --primary-color: #e91e63;
-      --accent-color: #03a9f4;
-      --text-color: #f5f5f5;
-      --button-bg: #1e1e1e;
-      --button-hover-bg: #333;
-      --loader-bg: rgba(0, 0, 0, 0.9);
-    }
-    
-    * {
-      box-sizing: border-box;
-    }
-    
-    /* Genel Stil */
     body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: white;
+      text-align: center;
       margin: 0;
       padding: 0;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      font-family: 'Roboto', sans-serif;
+    }
+
+    header {
+      background-color: #333;
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    input#search {
+      padding: 10px;
+      width: 80%;
+      max-width: 400px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .game-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .game {
+      background-color: #2a2a2a;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 10px;
       text-align: center;
-      opacity: 0;
-      animation: fadeIn 1s forwards;
+      width: 250px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      font-family: system-ui, 'Segoe UI','Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: 500;
+      text-shadow: 0px 0px 10px black;
+      min-height: 450px;
+      transition: all 1s;
+    }
+
+    .game img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .game h2 {
+      margin: 10px 0 5px;
+    }
+
+    .game p {
+      flex-grow: 1;
+      margin: 10px 0;
+    }
+
+    .game:hover {
+      transform: scale(1.09);
+      transition: all 1s;
+      text-shadow: 0px 0px 10px black;
+    }
+
+    button {
+      background-color: #13a700c5;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      width: 100%;
+      margin-top: auto;
+    }
+
+    button:hover {
+      background-color: #096d0098;
+    }
+
+    /* Sağ üst köşedeki Geri Dön butonu için özel stil */
+    .back-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: auto;
+      margin: 0;
+      padding: 10px 20px;
+      background-color: #ff5722;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      z-index: 1000;
     }
     
-    @keyframes fadeIn {
-      to { opacity: 1; }
+    .back-button:hover {
+      background-color: #e64a19;
     }
-    
-    /* Yüklenme Animasyonu */
-    .loader {
+
+    #loader {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: var(--loader-bg);
+      background-color: black;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 10000;
-      animation: fadeOut 1.5s forwards 2s;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
     }
-    
-    @keyframes fadeOut {
-      to { opacity: 0; visibility: hidden; }
-    }
-    
-    .spinner {
-      border: 4px solid transparent;
-      border-top: 4px solid var(--primary-color);
+
+    #loader .dot {
+      width: 15px;
+      height: 15px;
+      background: #fff;
       border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    /* Başlık */
-    h1 {
-      margin-top: 40px;
-      font-size: 2.5rem;
-      letter-spacing: 1px;
-      animation: slideDown 0.8s ease-out;
-    }
-    
-    @keyframes slideDown {
-      from { transform: translateY(-20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    
-    /* Kategori Butonları */
-    .category-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin: 30px 0;
-    }
-    
-    .category-buttons button {
-      background-color: var(--button-bg);
-      color: var(--text-color);
-      border: none;
-      padding: 12px 25px;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.3s;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    }
-    
-    .category-buttons button:hover {
-      background-color: var(--button-hover-bg);
-      transform: translateY(-2px);
-    }
-    
-    /* Liste Stilleri */
-    ul {
-      list-style: none;
-      padding: 0;
-      max-width: 600px;
-      margin: 20px auto;
-      animation: fadeInUp 0.8s ease-out;
-    }
-    
-    @keyframes fadeInUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    
-    li {
-      margin: 15px 0;
-      background: #1e1e1e;
-      padding: 10px;
-      border-radius: 8px;
-      transition: background 0.3s;
-    }
-    
-    li:hover {
-      background: #2a2a2a;
-    }
-    
-    a {
-      color: var(--primary-color);
-      text-decoration: none;
-      font-size: 1.1rem;
-      transition: color 0.3s;
-    }
-    
-    a:hover {
-      color: var(--accent-color);
-      text-decoration: underline;
-    }
-    
-    /* Kategori Alanı – Her Zaman Kaydırma */
-    .category {
-      display: none;
-      height: calc(100vh - 200px);
-      overflow-y: scroll;
-    }
-    
-    /* Footer */
-    footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: var(--bg-color);
-      color: var(--primary-color);
-      padding: 15px;
-      font-size: 0.9rem;
-      box-shadow: 0 -2px 5px rgba(0,0,0,0.3);
-      animation: fadeIn 1s forwards;
-    }
-    
-    footer a {
-      color: var(--accent-color);
-      cursor: pointer;
       margin: 0 5px;
+      animation: bounce 1s infinite;
     }
-    
-    /* Tarih & Saat */
-    #datetime {
-      position: fixed;
-      bottom: 60px;
-      left: 20px;
-      color: var(--primary-color);
-      font-size: 0.9rem;
-      animation: fadeIn 1s forwards;
+
+    #loader .dot:nth-child(2) {
+      animation-delay: 0.2s;
     }
-    
-    /* Hakkımızda Sayfası */
-    #about {
-      display: none;
-      animation: fadeIn 0.8s forwards;
-      max-width: 600px;
-      margin: 30px auto;
-      line-height: 1.6;
+
+    #loader .dot:nth-child(3) {
+      animation-delay: 0.4s;
     }
-    
-    #about button {
-      background-color: var(--primary-color);
-      color: var(--text-color);
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      margin-top: 20px;
-    }
-    
-    #about button:hover {
-      background-color: var(--accent-color);
-    }
-    
-    /* Son Güncellemeler Sayfası */
-    #update {
-      display: none;
-      animation: fadeIn 0.8s forwards;
-      max-width: 600px;
-      margin: 30px auto;
-      line-height: 1.6;
-    }
-    
-    #update button {
-      background-color: var(--primary-color);
-      color: var(--text-color);
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      margin-top: 20px;
-    }
-    
-    #update button:hover {
-      background-color: var(--accent-color);
-    }
-    
-    /* Mobil Tarayıcı Desteği */
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 2rem;
-        margin-top: 20px;
+
+    @keyframes bounce {
+      0%, 80%, 100% {
+        transform: translateY(0);
       }
-      .category-buttons {
-        flex-direction: column;
-        gap: 10px;
-        margin: 20px 0;
-      }
-      .category-buttons button {
-        padding: 10px 20px;
-        font-size: 1rem;
-      }
-      ul {
-        max-width: 90%;
-        margin: 10px auto;
-      }
-      .category {
-        height: calc(100vh - 150px);
-      }
-      footer {
-        font-size: 0.8rem;
-        padding: 10px;
-      }
-      #datetime {
-        font-size: 0.8rem;
-        bottom: 50px;
-        left: 10px;
+      40% {
+        transform: translateY(-20px);
       }
     }
+
   </style>
 </head>
 <body>
-  <!-- Yüklenme Animasyonu -->
-  <div class="loader">
-    <div class="spinner"></div>
+  <div id="loader">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
   </div>
+  <header>
+    <h1>Crack Game</h1>
+    <input type="text" id="search" placeholder="Oyun Ara...">
+  </header>
+
+  <!-- Sağ üst köşeye eklenen Geri Dön butonu -->
+  <button class="back-button" onclick="history.back()">Geri Dön</button>
+
+  <main>
+    <div class="game-list" id="gameList">
+      <div class="game">
+        <img src="mysummer.jpg" alt="My Summer Car">
+        <h2>My Summer Car</h2>
+        <p>My Summer Car, araç simülasyon oyunu olmasının yanında bir hayatta kalma oyunudur.</p>
+        <button onclick="downloadGame('https://drive.google.com/drive/folders/1n_fqIkfbWNOdTyb3d2dHBL0-GqbZ4eO8')">İndir</button>
+      </div>
+      <div class="game">
+        <img src="gta4.jpg" alt="Grand Theft Auto IV">
+        <h2>Grand Theft Auto IV</h2>
+        <p>Grand Theft Auto IV, Rockstar North tarafından geliştirilen ve Rockstar Games tarafından yayınlanan 2008 yapımı bir aksiyon-macera oyunudur.</p>
+        <button onclick="downloadGame('https://drive.usercontent.google.com/download?id=1MR8cuTeCw_2AiDaCboVr4Qoo6TXMr_Zy&export=download')">İndir</button>
+      </div>
+      <div class="game">
+        <img src="farming.jpg" alt="Farming Simülatör">
+        <h2>Farming Simulator</h2>
+        <p>Farming Simulator, Giants Software tarafından geliştirilen çiftlik simülasyonu üzerine kurulu video oyunu serisidir.</p>
+        <button onclick="downloadGame('https://drive.usercontent.google.com/download?id=11tzDwHwt1vbrxc9SH0diHVAsMK614ntg')">İndir</button>
+      </div>
+      <div class="game">
+        <img src="thefrost.jpg" alt="The Forest">
+        <h2>The Forest</h2>
+        <p>The Forest Endnight Games tarafından geliştirilen ve yayınlanan bir hayatta kalma video oyunudur.</p>
+        <button onclick="downloadGame('https://drive.google.com/file/d/143f1Dfg3005xbhq8dB41JisbSTkJPyr5/view')">İndir</button>
+      </div>
+      <div class="game">
+        <img src="ascrak4.jpg" alt="Assassins Creed 4 Black Flag">
+        <h2>Assassins Creed 4 Black Flag</h2>
+        <p>Assassin's Creed IV: Black Flag, Ubisoft Montreal tarafından geliştirilen ve Ubisoft tarafından yayımlanan 2013 yapımı bir aksiyon-macera video oyunudur.</p>
+        <button onclick="downloadGame('https://drive.usercontent.google.com/download?id=1h-l9kdu7FfG-q-9wfJ0PGPFjEaG6Fp6P&export=download&authuser=0')">İndir</button>
+      </div>
+      <div class="game">
+        <img src="subnautav.jpeg" alt="Subnautica">
+        <h2>Subnautica</h2>
+        <p>Subnautica, Unknown Worlds Entertainment tarafından geliştirilen ve yayınlanan açık dünya aksiyon-macera oyunudur.</p>
+        <button onclick="downloadGame('https://drive.usercontent.google.com/download?id=1zwZdRJ9fKuZiGAuitM8Jc5Lie6ZFNlOf')">İndir</button>
+      </div>
+      <div class="game">
+        <img src="nfs2.jpg" alt="Need For Speed 2">
+        <h2>Need For Speed 2</h2>
+        <p>Need for Speed: Underground 2, EA Black Box tarafından geliştirilip Electronic Arts tarafından 2004 Mayıs ayında yayımlanmıştır.</p>
+        <button onclick="downloadGame('https://dosya.co/tkcuhx542439/nfs_underground_2_serial_ve_crack.rar.html')">İndir</button>
+      </div>
   
-  <h1>Crack Games</h1>
-  
-  <!-- Kategori Butonları (her iki buton da aynı tasarıma sahip) -->
-  <div class="category-buttons">
-    <button onclick="location.href='s.html'">Oyunlar</button>
-    <button onclick="showCategory('apps')">Uygulamalar</button>
-  </div>
-  
-  <!-- Oyunlar Kategorisi -->
-  <div id="games" class="category">
-    <h2 style="text-shadow:0px 0px 10px red;">Oyunlar</h2>
-    <ul>
-      <li><a href="https://mega.nz/file/I3tC3Tzb#-e4HaWlB5zfMC2Q-ulL7itOIKY8C5Dqqqdffy2MuhDs" target="_blank">Templar 2</a></li>
-      <li><a href="https://drive.usercontent.google.com/download?id=11tzDwHwt1vbrxc9SH0diHVAsMK614ntg" target="_blank">Farming Simulator 2013</a></li>
-      <li><a href="https://drive.usercontent.google.com/download?id=171XLfbNa5ddnDNJl6XRdLAa6iUEWUIsB" target="_blank">HOİ4</a></li>
-      <li><a href="https://drive.google.com/file/d/1RRnV7op-wfHEy5NVvertHs7W15Go75iJ/view" target="_blank">HOİ4 Yama</a></li>
-      <li><a href="https://drive.google.com/drive/folders/1n_fqIkfbWNOdTyb3d2dHBL0-GqbZ4eO8" target="_blank">My Summer Car</a></li>
-      <li><a href="https://drive.usercontent.google.com/download?id=1a2W2iJu8CrYZ74urev4MivgHCLZyDINn" target="_blank">Forest</a></li>
-      <li><a href="https://drive.usercontent.google.com/download?id=1zwZdRJ9fKuZiGAuitM8Jc5Lie6ZFNlOf" target="_blank">Subnautica</a></li>
-      <li><a href="https://drive.usercontent.google.com/download?id=1h-l9kdu7FfG-q-9wfJ0PGPFjEaG6Fp6P&export=download&authuser=0" target="_blank">Assasins Creed 4 Black Flag</a></li>
-    </ul>
-  </div>
-  
-  <!-- Uygulamalar Kategorisi -->
-  <div id="apps" class="category">
-    <h2>Uygulamalar</h2>
-    <ul>
-      <li><a href="https://chromewebstore.google.com/detail/ublock-origin-lite/ddkjiahejlhfcafbddmgiahcphecmpfh" target="_blank">Ublock-origin-lite – Eklenti</a></li>
-      <li><a href="https://drive.google.com/file/d/1kR6SgzVHUVCmCDlj771iQYxRqlKV9gsv/view" target="_blank">Revo Uninstaller Pro</a></li>
-      <li><a href="https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-701.exe" target="_blank">WinRAR</a></li>
-  </div>
-  
-  <!-- Footer -->
-  <footer>
-    <a onclick="showAbout()">Hakkımızda</a> | 
-    <a onclick="showCategory('update')">Son Güncellemeler</a>
-  </footer>
-  
-  <!-- Tarih & Saat -->
-  <div id="datetime"></div>
-  
-  <!-- Hakkımızda Sayfası -->
-  <div id="about" class="category">
-    <h2>Hakkımızda</h2>
-    <p>Bu site, Kolay oyun erişimi için yapılmıştır; herhangi bir maddi geliri yoktur.<br>
-       Geliştiriciler: ENDERBAD_64&LostBlood<br>
- İletişim;<br>
- Discord: enderbad_64.59&lost_blood74 <br>
- Instagram: enderbad_64.59<p>
-  
-    <button onclick="goToMainMenu()">Ana Menü</button>
-  </div>
-  
-  <!-- Son Güncellemeler Sayfası -->
-  <div id="update" class="category">
-    <h2>Son Güncellemeler</h2>
-    <p>V3.9 Beta version<br>
-     -Yeni oyunlar<br>
-    -Hatalar onarıldı</p>
-      <p>V3.8 Beta version<br>
-         -Hatalar onarıldı<p>
-      <p> V3.7 Beta version<br>
-         -Yeni oyunlar eklendi<br>
-         - Hatalar onarıldı<br>
-     <p> V3.6 Beta version<p>
-       -Resim hataları onarıldı<br>
-       -Footer hataları onarıldı<br>
-       -Arayüz iyileştirildi<br>
-        -İletişim eklendi<br>
-       -Hakkımızda güncellendi<p>
-    <p> V3.5 Beta version<br>
-      -İndirme sorunları kısmen çözüldü <br>
-     -Yeni footer eklendi<br>
-     -Hatalar onarıldı<br>
-     -Mobil destek optimize edildi  <p>    
-    <button onclick="goToMainMenu()">Ana Menü</button>
-  </div>
+    <div class="game">
+      <img src="mc.webp" alt="Minecraft">
+      <h2>Minecraft</h2>
+      <p>Minecraft, Mojang Studios tarafından geliştirilen ve yayınlanan 2011 yapımı bir sandbox oyunudur. </p>
+      <button onclick="downloadGame('https://tlauncher.org/en/')"> TLauncher İndir</button>
+    </div>
+    
+  </main>
   
   <script>
-    function showCategory(category) {
-      document.querySelectorAll('.category').forEach(cat => cat.style.display = 'none');
-      document.getElementById(category).style.display = 'block';
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchInput = document.getElementById("search");
+      const loader = document.getElementById("loader");
+
+      searchInput.addEventListener("keyup", function () {
+        let input = searchInput.value.toLowerCase();
+        let games = document.querySelectorAll(".game");
+
+        games.forEach(game => {
+          let title = game.querySelector("h2").innerText.toLowerCase();
+          if (title.includes(input)) {
+            game.style.display = "flex";
+          } else {
+            game.style.display = "none";
+          }
+        });
+      });
+
+      // 2 saniye sonra yükleme ekranını gizle
+      setTimeout(function(){
+        loader.style.opacity = "0";
+        setTimeout(function(){
+          loader.style.display = "none";
+        }, 500);
+      }, 2000);
+    });
+
+    function downloadGame(url) {
+      window.open(url, '_blank');
     }
-    
-    function showAbout() {
-      // Ana içeriği gizle, geçici efektle Hakkımızda sayfasını göster
-      document.querySelector('h1').style.display = 'none';
-      document.querySelector('.category-buttons').style.display = 'none';
-      document.querySelectorAll('.category').forEach(cat => cat.style.display = 'none');
-      document.body.style.opacity = '0';
-      setTimeout(() => {
-        document.body.style.opacity = '1';
-        document.getElementById('about').style.display = 'block';
-      }, 1000);
-    }
-    
-    function goToMainMenu() {
-      location.reload();
-    }
-    
-    function updateDateTime() {
-      const now = new Date();
-      document.getElementById('datetime').innerText = now.toLocaleString('tr-TR');
-    }
-    
-    setInterval(updateDateTime, 1000);
-    updateDateTime();
   </script>
 </body>
 </html>
-
