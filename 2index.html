@@ -1,246 +1,164 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2Index - Kodlar</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-color: #212121;
-      color: #ecf0f1;
-      font-family: 'Roboto', sans-serif;
-      margin: 20px;
-      line-height: 1.6;
-    }
-    h1, h2 {
-      text-align: center;
-    }
-    .code-container {
-      margin-bottom: 40px;
-      max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .code-block {
-      background-color: #1a1a1a;
-      padding: 20px;
-      border-radius: 8px;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-all;
-      font-size: 0.95rem;
-      margin-bottom: 10px;
-    }
-    button.copy-btn {
-      background-color: #34495e;
-      color: #ecf0f1;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    button.copy-btn:hover {
-      background-color: #1abc9c;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Kodları - ENDERBAD64</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #121212;
+            color: #f5f5f5;
+            padding: 1em;
+            margin: 0;
+        }
+        .code-block {
+            background-color: #1e1e1e;
+            padding: 1em;
+            margin-bottom: 2em;
+            border-radius: 0.5em;
+            overflow-x: auto;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5em;
+            right: 0.5em;
+            background: #3f3f3f;
+            color: #fff;
+            border: none;
+            padding: 0.5em 1em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .copy-btn:hover {
+            background-color: #5c5c5c;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
 </head>
 <body>
+    <h1>Android Java Kodları</h1>
 
-  <h1>2Index - Kodlar</h1>
-
-  <!-- Kod Bloğu 1 -->
-  <div class="code-container">
-    <h2>Kod 1 - Şehir Resim</h2>
-    <div class="code-block" id="codeBlock1">
-<pre>package com.example.myapplication;
+    <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code>package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.telecom.Call;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    ListView listViev;
-    static Bitmap selectedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listViev = findViewById(R.id.listViev);
-        ArrayList&lt;String&gt; landMarkNames = new ArrayList&lt;&gt;();
-        landMarkNames.add("Pisa");
-        landMarkNames.add("Eiffel");
-        landMarkNames.add("Colosseo");
-        landMarkNames.add("London_Bridge");
+        try {
+            SQLiteDatabase database = this.openOrCreateDatabase("musicians", MODE_PRIVATE, null);
+            database.execSQL("CREATE TABLE IF NOT EXISTS musicians(name VARCHAR, age INT)");
+            database.execSQL("INSERT INTO musicians (name, age) VALUES ('James', 50)");
 
-        ArrayList&lt;String&gt; countryName = new ArrayList&lt;&gt;();
-        countryName.add("italya");
-        countryName.add("fransa");
-        countryName.add("italya");
-        countryName.add("birleşik krallık");
+            Cursor cursor = database.rawQuery("SELECT * FROM musicians", null);
 
-        Bitmap Pisa = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.pissa);
-        Bitmap Eiffel = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.eiffel);
-        Bitmap Colosseo = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.colesyum);
-        Bitmap London_Bridge = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.london_bridge);
+            int nameIx = cursor.getColumnIndex("name");
+            int ageIx = cursor.getColumnIndex("age");
 
-        ArrayList&lt;Bitmap&gt; landMarkImages = new ArrayList&lt;&gt;();
-        landMarkImages.add(Pisa);
-        landMarkImages.add(Eiffel);
-        landMarkImages.add(Colosseo);
-        landMarkImages.add(London_Bridge);
-
-        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, landMarkNames);
-        listViev.setAdapter(arrayAdapter);
-
-        listViev.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView&lt;?&gt; adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(), grafik.class);
-                intent.putExtra("name", landMarkNames.get(i));
-                intent.putExtra("country", countryName.get(i));
-                selectedImage = landMarkImages.get(i);
-                startActivity(intent);
+            while(cursor.moveToNext()) {
+                String name = cursor.getString(nameIx);
+                int age = cursor.getInt(ageIx);
+                System.out.println("Name: " + name);
+                System.out.println("Age: " + age);
             }
-        });
+            cursor.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-}</pre>
+}</code></pre>
     </div>
-    <button class="copy-btn" onclick="copyCode('codeBlock1')">Kopyala</button>
-  </div>
 
-  <!-- Kod Bloğu 2 -->
-  <div class="code-container">
-    <h2>Kod 2 - Resim Yakalama Oyunu</h2>
-    <div class="code-block" id="codeBlock2">
-<pre>package com.example.myapplication;
+    <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code>package com.enderbad.artbook;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    TextView ScorText, TimeText;
-    int Score;
-    ImageView imageView2, imageView3, imageView4, imageView5, imageView6, imageView7, imageView8, imageView9, imageView10;
-    ImageView[] imageArray;
-    Handler handler;
-    Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TimeText = findViewById(R.id.TimeText);
-        ScorText = findViewById(R.id.ScorText);
-        imageView2 = findViewById(R.id.imageView2);
-        imageView3 = findViewById(R.id.imageView3);
-        imageView4 = findViewById(R.id.imageView4);
-        imageView5 = findViewById(R.id.imageView5);
-        imageView6 = findViewById(R.id.imageView6);
-        imageView7 = findViewById(R.id.imageView7);
-        imageView8 = findViewById(R.id.imageView8);
-        imageView9 = findViewById(R.id.imageView9);
-        imageView10 = findViewById(R.id.imageView10);
-        Score = 0;
-        imageArray = new ImageView[]{imageView2, imageView3, imageView4, imageView5, imageView6, imageView7, imageView8, imageView9, imageView10};
-        hideImages();
-
-        new CountDownTimer(10000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                TimeText.setText("TIME: " + millisUntilFinished / 1000);
-            }
-
-            @Override
-            public void onFinish() {
-                TimeText.setText("Süre bitti");
-                handler.removeCallbacks(runnable);
-                for (ImageView image : imageArray) {
-                    image.setVisibility(View.INVISIBLE);
-                }
-                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
-                alert.setTitle("Yeniden Başlat");
-                alert.setMessage("Yeniden başlamak ister misin?");
-                alert.setPositiveButton("EVET", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = getIntent();
-                        finish();
-                        startActivity(intent);
-                    }
-                });
-                alert.setNegativeButton("HAYIR", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(MainActivity.this, "KAYBETTİN", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                alert.show();
-            }
-        }.start();
     }
 
-    public void scorarttir(View view) {
-        Score++;
-        ScorText.setText("SCORE: " + Score);
+    public void resimsec(View view) {
+
     }
 
-    public void hideImages() {
-        handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                for (ImageView image : imageArray) {
-                    image.setVisibility(View.INVISIBLE);
-                }
-                Random random = new Random();
-                int i = random.nextInt(9);
-                imageArray[i].setVisibility(View.VISIBLE);
-                handler.postDelayed(this, 1000);
-            }
-        };
-        handler.post(runnable);
+    public void button(View view) {
+
     }
-}</pre>
+}</code></pre>
     </div>
-    <button class="copy-btn" onclick="copyCode('codeBlock2')">Kopyala</button>
-  </div>
 
-  <script>
-    function copyCode(elementId) {
-      const codeElement = document.getElementById(elementId);
-      const code = codeElement.innerText;
-      navigator.clipboard.writeText(code)
-        .then(() => alert("Kod panoya kopyalandı!"))
-        .catch(err => alert("Kopyalama sırasında hata oluştu: " + err));
+    <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+        <pre><code>package com.enderbad.artbook;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+public class MainActivity2 extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
     }
-  </script>
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.add_art, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.add_art_item) {
+            Intent intent = new Intent(MainActivity2.this, Main2Activity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+}</code></pre>
+    </div>
+
+    <script>
+        function copyCode(button) {
+            const code = button.nextElementSibling.innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = 'Kopyalandı!';
+                setTimeout(() => button.textContent = 'Kopyala', 1500);
+            });
+        }
+    </script>
 </body>
 </html>
