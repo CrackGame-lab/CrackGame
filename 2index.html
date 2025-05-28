@@ -87,7 +87,7 @@
   <h2>SQL Sorgusu</h2>
   <div class="code-block">
     <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
-    <pre><code>package com.example.myapplication;
+    <pre><code>package com.example.myapplication3;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.database.Cursor;
@@ -102,31 +102,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try {
-            // Veritabanını oluştur ya da aç
-            SQLiteDatabase database = this.openOrCreateDatabase("musicians", MODE_PRIVATE, null);
+            // Veritabanını oluştur veya aç
+            SQLiteDatabase database = this.openOrCreateDatabase("Musicians", MODE_PRIVATE, null);
 
             // Tabloyu oluştur, eğer mevcut değilse
-            database.execSQL("CREATE TABLE IF NOT EXISTS musicians(name VARCHAR, age INT)");
+            database.execSQL("CREATE TABLE IF NOT EXISTS musicians (id INTEGER PRIMARY KEY, name VARCHAR, age INT)");
 
-            // Veriyi ekle
-            database.execSQL("INSERT INTO musicians (name, age) VALUES ('James', 50)");
+            // Örnek verileri ekle
+            database.execSQL("INSERT INTO musicians (name, age) VALUES ('Berkay', 18)");
+            database.execSQL("INSERT INTO musicians (name, age) VALUES ('ENDERBAD', 64)");
+            database.execSQL("INSERT INTO musicians (name, age) VALUES ('Türkiye', 100)");
 
-            // Verileri sorgula
+            // Tüm kayıtları sorgula
             Cursor cursor = database.rawQuery("SELECT * FROM musicians", null);
 
-            // İndeksleri al
+            // Sütun indekslerini al
+            int idIx   = cursor.getColumnIndex("id");
             int nameIx = cursor.getColumnIndex("name");
-            int ageIx = cursor.getColumnIndex("age");
+            int ageIx  = cursor.getColumnIndex("age");
 
-            // Cursor ile veriyi işleme
-            while(cursor.moveToNext()) {
-                // İndeksleri kullanarak verileri al
-                String name = cursor.getString(nameIx);
-                int age = cursor.getInt(ageIx);
-
-                // Veriyi kullan (örneğin loglamak ya da kullanıcıya göstermek)
-                System.out.println("Name: " + name);
-                System.out.println("Age: " + age);
+            // Cursor ile sonuçları işle
+            while (cursor.moveToNext()) {
+                System.out.println("id: "   + cursor.getInt(idIx));
+                System.out.println("Name: " + cursor.getString(nameIx));
+                System.out.println("Age: "  + cursor.getInt(ageIx));
             }
             cursor.close();
 
