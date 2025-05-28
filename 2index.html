@@ -1,52 +1,93 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Java Kodları - ENDERBAD64</title>
-    <style>
-        body {
-            font-family: 'Courier New', monospace;
-            background-color: #121212;
-            color: #f5f5f5;
-            padding: 1em;
-            margin: 0;
-        }
-        .code-block {
-            background-color: #1e1e1e;
-            padding: 1em;
-            margin-bottom: 2em;
-            border-radius: 0.5em;
-            overflow-x: auto;
-            position: relative;
-        }
-        .copy-btn {
-            position: absolute;
-            top: 0.5em;
-            right: 0.5em;
-            background: #3f3f3f;
-            color: #fff;
-            border: none;
-            padding: 0.5em 1em;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .copy-btn:hover {
-            background-color: #5c5c5c;
-        }
-        pre {
-            margin: 0;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Java Kodları - ENDERBAD64</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Courier New', monospace;
+      background-color: #121212;
+      color: #f5f5f5;
+      padding: 1em;
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #ff5555;
+      font-size: 1.8em;
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    h2 {
+      color: #ff9f43;
+      border-bottom: 1px solid #555;
+      padding-bottom: 0.3em;
+      font-size: 1.3em;
+      margin-top: 2em;
+    }
+    .code-block {
+      background-color: #1e1e1e;
+      padding: 1em;
+      margin-top: 1em;
+      margin-bottom: 2em;
+      border-radius: 0.5em;
+      overflow-x: auto;
+      position: relative;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 0.5em;
+      right: 0.5em;
+      background: #3f3f3f;
+      color: #fff;
+      border: none;
+      padding: 0.4em 0.9em;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 0.9em;
+      z-index: 2;
+    }
+    .copy-btn:hover {
+      background-color: #5c5c5c;
+    }
+    pre {
+      margin: 0;
+      white-space: pre;
+      font-size: 0.95em;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 15px;
+        padding: 0.7em;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      h2 {
+        font-size: 1.1em;
+      }
+      .copy-btn {
+        font-size: 0.8em;
+        padding: 0.3em 0.7em;
+      }
+      pre {
+        font-size: 0.9em;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Android Java Kodları</h1>
+  <h1>ENDERBAD64 - Java Kodları</h1>
 
-    <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
-        <pre><code>package com.example.myapplication;
+  <h2>SQL Sorgusu</h2>
+  <div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+    <pre><code>package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.database.Cursor;
@@ -83,37 +124,72 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }</code></pre>
-    </div>
+  </div>
 
-    <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
-        <pre><code>package com.enderbad.artbook;
+  <h2>Java-SQL Uygulama (Java 1)</h2>
+  <div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+    <pre><code>package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    EditText kadi, sifre;
+    Button giris;
+    SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
-    public void resimsec(View view) {
+        kadi = findViewById(R.id.txtKadi);
+        sifre = findViewById(R.id.txtSifre);
+        giris = findViewById(R.id.btnGiris);
 
-    }
+        database = this.openOrCreateDatabase("giris", MODE_PRIVATE, null);
+        database.execSQL("CREATE TABLE IF NOT EXISTS giris (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, password VARCHAR)");
+        database.execSQL("INSERT INTO giris (name, password) VALUES ('hasan', '1234')");
 
-    public void button(View view) {
+        giris.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String kullaniciAdi = kadi.getText().toString();
+                String sifreGirilen = sifre.getText().toString();
 
+                Cursor cursor = database.rawQuery(
+                    "SELECT * FROM giris WHERE name = ? AND password = ?",
+                    new String[]{kullaniciAdi, sifreGirilen}
+                );
+
+                if (cursor.getCount() > 0) {
+                    Toast.makeText(MainActivity.this, "Giriş Başarılı", Toast.LENGTH_SHORT).show();
+                    cursor.close();
+                    Intent intent = new Intent(MainActivity.this, KarsilamaEkrani.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MainActivity.this, "Hatalı Giriş", Toast.LENGTH_SHORT).show();
+                    cursor.close();
+                }
+            }
+        });
     }
 }</code></pre>
-    </div>
+  </div>
 
-    <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
-        <pre><code>package com.enderbad.artbook;
+  <h2>Menü Uygulaması (Java 2)</h2>
+  <div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">Kopyala</button>
+    <pre><code>package com.enderbad.artbook;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -149,16 +225,16 @@ public class MainActivity2 extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }</code></pre>
-    </div>
+  </div>
 
-    <script>
-        function copyCode(button) {
-            const code = button.nextElementSibling.innerText;
-            navigator.clipboard.writeText(code).then(() => {
-                button.textContent = 'Kopyalandı!';
-                setTimeout(() => button.textContent = 'Kopyala', 1500);
-            });
-        }
-    </script>
+  <script>
+    function copyCode(button) {
+      const code = button.nextElementSibling.innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        button.textContent = 'Kopyalandı!';
+        setTimeout(() => (button.textContent = 'Kopyala'), 1500);
+      });
+    }
+  </script>
 </body>
 </html>
