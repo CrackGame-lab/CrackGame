@@ -102,18 +102,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try {
+            // Veritabanını oluştur ya da aç
             SQLiteDatabase database = this.openOrCreateDatabase("musicians", MODE_PRIVATE, null);
+
+            // Tabloyu oluştur, eğer mevcut değilse
             database.execSQL("CREATE TABLE IF NOT EXISTS musicians(name VARCHAR, age INT)");
+
+            // Veriyi ekle
             database.execSQL("INSERT INTO musicians (name, age) VALUES ('James', 50)");
 
+            // Verileri sorgula
             Cursor cursor = database.rawQuery("SELECT * FROM musicians", null);
 
+            // İndeksleri al
             int nameIx = cursor.getColumnIndex("name");
             int ageIx = cursor.getColumnIndex("age");
 
+            // Cursor ile veriyi işleme
             while(cursor.moveToNext()) {
+                // İndeksleri kullanarak verileri al
                 String name = cursor.getString(nameIx);
                 int age = cursor.getInt(ageIx);
+
+                // Veriyi kullan (örneğin loglamak ya da kullanıcıya göstermek)
                 System.out.println("Name: " + name);
                 System.out.println("Age: " + age);
             }
@@ -156,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         sifre = findViewById(R.id.txtSifre);
         giris = findViewById(R.id.btnGiris);
 
+        // Veritabanını oluştur veya aç
         database = this.openOrCreateDatabase("giris", MODE_PRIVATE, null);
         database.execSQL("CREATE TABLE IF NOT EXISTS giris (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, password VARCHAR)");
         database.execSQL("INSERT INTO giris (name, password) VALUES ('hasan', '1234')");
@@ -166,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 String kullaniciAdi = kadi.getText().toString();
                 String sifreGirilen = sifre.getText().toString();
 
+                // Kullanıcı sorgusu
                 Cursor cursor = database.rawQuery(
                     "SELECT * FROM giris WHERE name = ? AND password = ?",
                     new String[]{kullaniciAdi, sifreGirilen}
@@ -238,3 +251,4 @@ public class MainActivity2 extends AppCompatActivity {
   </script>
 </body>
 </html>
+
