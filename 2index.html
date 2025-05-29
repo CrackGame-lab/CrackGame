@@ -107,6 +107,10 @@ public class MainActivity extends AppCompatActivity {
 
             // Tabloyu oluştur, eğer mevcut değilse
             database.execSQL("CREATE TABLE IF NOT EXISTS musicians (id INTEGER PRIMARY KEY, name VARCHAR, age INT)");
+            // Cursor cursor = database.rawQuery("SELECT * FROM musicians WHERE id = 2", null);
+            // Cursor cursor = database.rawQuery("SELECT * FROM musicians WHERE name LIKE 'b%'", null);
+            // Cursor cursor = database.rawQuery("SELECT * FROM musicians WHERE name LIKE '%y'", null);
+            // Cursor cursor = database.rawQuery("SELECT * FROM musicians WHERE name = 'Berkay'", null);
 
             // Örnek verileri ekle
             database.execSQL("INSERT INTO musicians (name, age) VALUES ('Berkay', 18)");
