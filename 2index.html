@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             // Veritabanını oluştur veya aç
             SQLiteDatabase database = this.openOrCreateDatabase("Musicians", MODE_PRIVATE, null);
-
+              //!!!!DİKKAT SORMADIYSA ŞU b% y% where id 2 GİBİ ŞEYLERİ EKLEMEYİN KODA SADECE İSMİ KOYUN DİKKAT!!!!
             // Tabloyu oluştur, eğer mevcut değilse
             database.execSQL("CREATE TABLE IF NOT EXISTS musicians (id INTEGER PRIMARY KEY, name VARCHAR, age INT)");
             // Cursor cursor = database.rawQuery("SELECT * FROM musicians WHERE id = 2", null);
