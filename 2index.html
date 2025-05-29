@@ -153,7 +153,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText kadi, sifre;
+    EditText kullanici, kullanicisifre;
     Button giris;
     SQLiteDatabase database;
 
@@ -162,31 +162,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        kadi = findViewById(R.id.txtKadi);
-        sifre = findViewById(R.id.txtSifre);
-        giris = findViewById(R.id.btnGiris);
+        kullanici = findViewById(R.id.kullanicitxt);
+        kullanicisifre = findViewById(R.id.sifretxt);
+        giris = findViewById(R.id.button);
 
-        // Veritabanını oluştur veya aç
+
+     
         database = this.openOrCreateDatabase("giris", MODE_PRIVATE, null);
+     
         database.execSQL("CREATE TABLE IF NOT EXISTS giris (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, password VARCHAR)");
-        database.execSQL("INSERT INTO giris (name, password) VALUES ('hasan', '1234')");
+  
+   
+        database.execSQL("INSERT INTO giris (name, password) VALUES (' a  ', '1234')");
 
         giris.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String kullaniciAdi = kadi.getText().toString();
-                String sifreGirilen = sifre.getText().toString();
+                String kullaniciAdi = kullanici.getText().toString();
+              
+                String sifreGirilen = kullanicisifre.getText().toString();
 
-                // Kullanıcı sorgusu
+
                 Cursor cursor = database.rawQuery(
-                    "SELECT * FROM giris WHERE name = ? AND password = ?",
-                    new String[]{kullaniciAdi, sifreGirilen}
+                        "SELECT * FROM giris WHERE name = ? AND password = ?",
+                        new String[]{kullaniciAdi, sifreGirilen}
                 );
 
                 if (cursor.getCount() > 0) {
                     Toast.makeText(MainActivity.this, "Giriş Başarılı", Toast.LENGTH_SHORT).show();
                     cursor.close();
-                    Intent intent = new Intent(MainActivity.this, KarsilamaEkrani.class);
+                    Intent intent = new Intent(MainActivity.this, MainActivity2.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(MainActivity.this, "Hatalı Giriş", Toast.LENGTH_SHORT).show();
@@ -195,6 +200,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+}
+
 }</code></pre>
   </div>
 
